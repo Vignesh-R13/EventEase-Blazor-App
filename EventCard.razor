@@ -1,0 +1,25 @@
+@page "/event-card"
+
+<div class="card" style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; max-width: 300px;">
+    <div class="card-body">
+        <h5 class="card-title">@EventTitle</h5>
+        <p class="card-text"><strong>Date:</strong> @EventDate.ToShortDateString()</p>
+        <p class="card-text">@EventDescription</p>
+    </div>
+</div>
+
+<h3 style="margin-top:20px;">Edit Event (Two-Way Data Binding)</h3>
+<div class="form-group">
+    <label>Event Title:</label>
+    <input class="form-control" @bind="EventTitle" @bind:event="oninput" />
+</div>
+<div class="form-group" style="margin-top: 10px;">
+    <label>Event Description:</label>
+    <textarea class="form-control" @bind="EventDescription" @bind:event="oninput"></textarea>
+</div>
+
+@code {
+    private string EventTitle { get; set; } = "Tech Conference 2026";
+    private DateTime EventDate { get; set; } = DateTime.Now.AddDays(30);
+    private string EventDescription { get; set; } = "An amazing gathering exploring AI capabilities.";
+}
