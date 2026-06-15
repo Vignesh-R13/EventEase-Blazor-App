@@ -1,0 +1,58 @@
+@page "/register"
+@using System.ComponentModel.DataAnnotations
+
+<h3>Event Registration & Attendance Tracker</h3>
+
+<div class="alert alert-info">
+    <strong>Total Confirmed Attendees:</strong> @AttendeeCount
+</div>
+
+<EditForm Model="@registrationModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Full Name:</label>
+        <InputText id="name" class="form-control" @bind-Value="registrationModel.FullName" />
+        <ValidationMessage For="@(() => registrationModel.FullName)" />
+    </div>
+
+    <div class="form-group" style="margin-top: 10px;">
+        <label for="email">Email Address:</label>
+        <InputText id="email" class="form-control" @bind-Value="registrationModel.Email" />
+        <ValidationMessage For="@(() => registrationModel.Email)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Register & Check-In</button>
+</EditForm>
+
+@if (ShowSuccessMessage)
+{
+    <div class="alert alert-success" style="margin-top: 15px;">
+        Successfully registered for EventEase! Your session state is secured.
+    </div>
+}
+
+@code {
+    private RegistrationModel registrationModel = new RegistrationModel();
+    private int AttendeeCount { get; set; } = 42; // Initial mock state
+    private bool ShowSuccessMessage { get; set; } = false;
+
+    private void HandleValidSubmit()
+    {
+        ShowSuccessMessage = true;
+        AttendeeCount++; // Increment attendance tracker dynamically
+    }
+
+    // Data Model with built-in validation rules
+    public class RegistrationModel
+    {
+        [Required(ErrorMessage = "Name is highly required to reserve a seat.")]
+        [StringLength(50, ErrorMessage = "Name is too long.")]
+        public string FullName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email is required for ticket delivery.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        public string Email { get; set; } = string.Empty;
+    }
+}
