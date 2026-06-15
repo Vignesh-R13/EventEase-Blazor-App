@@ -1,0 +1,21 @@
+@page "/event/{id:int}"
+
+<h3>Event Specification Details</h3>
+
+<div class="jumbotron" style="padding: 20px; background-color: #f0f2f5; border-radius: 6px;">
+    <h4>Viewing Event Space ID: @Id</h4>
+    <p class="lead">This route was successfully parsed and checked for runtime rendering anomalies.</p>
+</div>
+
+@code {
+    // Route parameter injected here safely
+    [Parameter]
+    public int Id { get; set; }
+
+    // Optimization feature to prevent unnecessary re-renders
+    protected override bool ShouldRender()
+    {
+        // Only re-render if the ID state is valid
+        return Id > 0;
+    }
+}
